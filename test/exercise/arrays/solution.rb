@@ -1,58 +1,30 @@
 module Exercise
   module Arrays
     class << self
-      def get_max(arr)
-        array = arr.clone
-        n = array.length
-        loop do
-          swapped = false
-
-          (n - 1).times do |i|
-            if array[i] > array[i + 1]
-              array[i], array[i + 1] = array[i + 1], array[i]
-              swapped = true
-            end
-          end
-
-          break unless swapped
+      def get_max(array)
+        max = array[0]
+        for el in array do
+          max = el if el > max
         end
-
-        array[-1]
+        max
       end
 
       def replace(array)
-        array.map do |el|
-          el.positive? ? get_max(array) : el
-        end
+        max = get_max(array)
+        array.map { |el| el.positive? ? max : el }
       end
 
-      def search(arr, query)
-        return -1 if arr.length.zero?
-        return -1 if query < arr.first || query > arr.last
+      def search(array, query)
+        return -1 if array.length.zero? || query < array.first || query > array.last
 
-        recurse(arr, query, 0, arr.size - 1)
-      end
-
-      def recurse(arr, target, low, high)
-        mid = (low + high) / 2
-        case target <=> arr[mid]
-        when 0
-          guess = mid
-        when -1
-          guess = if low == mid
-                 -1
-               else
-                 recurse(arr, target, low, mid - 1)
-               end
-        when 1
-          guess = if high == mid
-                 -1
-               else
-                 recurse(arr, target, mid + 1, high)
-               end
+        mid = array.count / 2
+        if query == array[mid]
+          mid
+        elsif query < array[mid]
+          search(array[0..mid - 1], query)
+        elsif query > array[mid]
+          search(array[mid + 1..], query) + mid + 1
         end
-
-        guess
       end
     end
   end
