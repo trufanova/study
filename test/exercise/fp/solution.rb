@@ -8,8 +8,8 @@ module Exercise
         filtered_films = array.reject { |film| film['country'].nil? }
                               .select { |film| film['country'].split(',').length > 1 }
                               .reject { |film| film['rating_kinopoisk'].to_f.zero? }
-                              .map { |film| film['rating_kinopoisk'] }
-        sum_rating = filtered_films.reduce { |sum, el| el.to_f + sum.to_f }
+        rating_of_films = filtered_films.map { |film| film['rating_kinopoisk'] }
+        sum_rating = rating_of_films.reduce { |sum, el| el.to_f + sum.to_f }
         sum_rating / filtered_films.length
       end
 
